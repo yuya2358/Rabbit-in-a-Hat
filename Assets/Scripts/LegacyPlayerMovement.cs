@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public enum PlayerState
 {
     normal, 
@@ -213,3 +214,4 @@ public class LegacyPlayerMovement : MonoBehaviour
         transform.localScale = new Vector3(direction * 0.28f, 0.28f, 0.28f);
     }
 }
+*/

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum PlayerState
@@ -25,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpForce => (2f * maxJumpHeight) / (maxJumpTime / 2f);
     public float Gravity => (-2f * maxJumpHeight) / Mathf.Pow((maxJumpTime / 2f), 2);
     public bool Grounded { get; private set; }
-    public bool Jumping { get; private set; }
+    Vector2 initialStartPosition = new Vector2(-6f, -3f);
 
     [Header("Dashing")]
     float dashingVelocity = 16f;
@@ -39,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
     bool isIdle;
     bool isCharging;
     bool isCharged;
+
+    public TextMeshProUGUI debugText;
 
     private void Awake()
     {
@@ -93,6 +96,25 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimation();
     }
 
+    void LateUpdate()
+    {
+        debugText.text = _rigidbody.position.x.ToString();
+    }
+
+    void FixedUpdate()
+    {
+        Vector2 position = _rigidbody.position;
+        position += velocity * Time.fixedDeltaTime;
+
+        Vector2 leftEdge = _camera.ScreenToWorldPoint(Vector2.zero);
+        Vector2 rightEdge = _camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        position.x = Mathf.Clamp(position.x, leftEdge.x + 0.5f, rightEdge.x - 0.5f);
+
+        if (Grounded && velocity.y < 0) position.y = initialStartPosition.y; //Fixed the issue where the gravity gradually decreases noticeably as the falling rabbit almost reaches the ground.
+
+        _rigidbody.MovePosition(position);
+    }
+
     private void HorizontalMovement()
     {
         inputAxis = Input.GetAxis("Horizontal");
@@ -113,12 +135,10 @@ public class PlayerMovement : MonoBehaviour
     private void GroundedMovement()
     {
         velocity.y = Mathf.Max(velocity.y, 0f);
-        Jumping = velocity.y > 0f;
 
         if (Input.GetButtonDown("Jump"))
         {
             velocity.y = JumpForce;
-            Jumping = true;
         }
     }
 
@@ -184,17 +204,7 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = Mathf.Max(velocity.y, Gravity / 2f);
     }
 
-    private void FixedUpdate()
-    {
-        Vector2 position = _rigidbody.position;
-        position += velocity * Time.fixedDeltaTime;
 
-        Vector2 leftEdge = _camera.ScreenToWorldPoint(Vector2.zero);
-        Vector2 rightEdge = _camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        position.x = Mathf.Clamp(position.x, leftEdge.x + 0.5f, rightEdge.x - 0.5f);
-
-        _rigidbody.MovePosition(position);
-    }
 
     void UpdateAnimation()
     {

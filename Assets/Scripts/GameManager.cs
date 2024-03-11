@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -17,7 +19,7 @@ public class GameManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
     public Image BossHP;
-
+    
 
     void Awake()
     {
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         BossHP.fillAmount = FindObjectOfType<EnemyController>().hp / FindObjectOfType<EnemyController>().i_hp;
+
+        
     }
 
 
