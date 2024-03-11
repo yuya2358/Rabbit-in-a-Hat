@@ -72,12 +72,12 @@ public class GameManager : MonoBehaviour
     }
 
     //Slow Motion
-    void SlowDown()
+    public void SlowDown()
     {
         Time.timeScale = Mathf.Lerp(1, 0.1f, 5);
 
     }
-    void SetSlowDownNormal()
+    public void SetSlowDownNormal()
     {
         Time.timeScale = Mathf.Lerp(0.1f, 1f, 5);
 

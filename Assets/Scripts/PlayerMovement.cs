@@ -35,12 +35,12 @@ public class PlayerMovement : MonoBehaviour
     bool isDashing = false;
     bool canDash = true;
 
-    PlayerState currentState;
+    [Header("Teleport")]
     int teleportDistance = 3;
-    bool isIdle;
-    bool isCharging;
-    bool isCharged;
+    public GameObject SlowMoBG;
 
+    PlayerState currentState;
+    bool isIdle;
     public TextMeshProUGUI debugText;
 
     private void Awake()
@@ -61,34 +61,34 @@ public class PlayerMovement : MonoBehaviour
         {
             case PlayerState.normal:
 
-                HorizontalMovement();
+                capsuleCollider.enabled = true;
+                SlowMoBG.SetActive(false);
+                FindObjectOfType<GameManager>().SetSlowDownNormal();
 
                 Grounded = _rigidbody.Raycast(Vector2.down);
-
                 if (Grounded)
                 {
                     GroundedMovement();
                     canDash = true;
                 }
 
-                capsuleCollider.enabled = true;
-
-                ApplyGravity();
-
                 var dashInput = Input.GetButtonDown("Dash");
-
                 if (dashInput && canDash)
                 {
                     currentState = PlayerState.teleport;
                 }
+
+                HorizontalMovement();
+                ApplyGravity();
 
                 break;
 
             case PlayerState.teleport:
 
                 TeleportPreparing();
-
+                SlowMoBG.SetActive(true);
                 capsuleCollider.enabled = false;
+                FindObjectOfType<GameManager>().SlowDown();
 
                 break;
         }
@@ -160,6 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
     void TeleportEnd()
     {
+        velocity = Vector2.zero;
         trailRenderer.emitting = false;
         currentState = PlayerState.normal;
     }
