@@ -28,11 +28,14 @@ public class RobinController : MonoBehaviour
     float moveSpeedDash;
     float walkOffset = 1f;
 
+    float walkTimer;
+    float walkTimerMax = 2f;
     float throwForce = 5f;
+    bool needDashDirection = true;
 
     bool speedBreak = false;
 
-    private Camera _camera;
+    Camera _camera;
 
     Rigidbody2D rb;
 
@@ -51,7 +54,7 @@ public class RobinController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         _camera = Camera.main;
         moveSpeed = 0f;
-        moveSpeedWalk = 3f;
+        moveSpeedWalk = 2f;
         moveSpeedDash = moveSpeedWalk * 3;
     }
 
@@ -76,11 +79,12 @@ public class RobinController : MonoBehaviour
                 break;
         }
 
-        playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
-        direction = playerPosition - transform.position;
-        direction.Normalize();
-        direction.y = 0f;
-
+        if (currentState != RobinState.Dash)
+        {
+            setDirection();
+            needDashDirection = true;
+        }
+        
         Debugging();
     }
 
@@ -131,18 +135,13 @@ public class RobinController : MonoBehaviour
 
     private void Walk()
     {
-        if (speedBreak)
+        walkTimer += Time.deltaTime;
+
+        if (speedBreak || walkTimer >= walkTimerMax)
         {
             currentState = RobinState.Stab;
         }
         else moveSpeed = moveSpeedWalk;
-
-        /*
-        if (Mathf.Abs(playerPosition.x - transform.position.x) <= walkOffset)
-        {
-            currentState = RobinState.Stab;
-        }
-        */
     }
 
     private void Stab()
@@ -156,18 +155,31 @@ public class RobinController : MonoBehaviour
 
     private void Dash()
     {
+        moveSpeed = moveSpeedDash;
+
+        if (needDashDirection)
+        {
+            setDirection();
+            needDashDirection = false;
+        }
+
+        Vector2 leftEdge = _camera.ScreenToWorldPoint(Vector2.zero);
+        Vector2 rightEdge = _camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+
+        
+        if (Mathf.Abs(leftEdge.x - transform.position.x) <= walkOffset * 2
+            || Mathf.Abs(rightEdge.x - transform.position.x) <= walkOffset * 2)
+        {
+            currentState = RobinState.Idle;
+        }
+        
+
         if (speedBreak)
         {
             currentState = RobinState.Stab;
         }
-        else moveSpeed = moveSpeedDash;
 
         Attack(1f, false);
-
-        if (Mathf.Abs(playerPosition.x - transform.position.x) <= walkOffset)
-        {
-            currentState = RobinState.Idle;
-        }
     }
 
     private void Throw()
@@ -181,6 +193,14 @@ public class RobinController : MonoBehaviour
         }
 
         currentState = RobinState.Idle;
+    }
+
+    void setDirection()
+    {
+        playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        direction = playerPosition - transform.position;
+        direction.Normalize();
+        direction.y = 0f;
     }
 
     private void Debugging()
