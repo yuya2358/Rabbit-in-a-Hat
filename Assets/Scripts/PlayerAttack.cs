@@ -33,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -87,6 +87,10 @@ public class PlayerAttack : MonoBehaviour
             currentState = MouseState.Delay;
         }
 
+        if (FindObjectOfType<PlayerMovement>().currentState == PlayerState.teleport)
+        {
+            chargingPower = 0;
+        }
     }
 
     void AutoCards()

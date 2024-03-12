@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     int teleportDistance = 3;
     public GameObject SlowMoBG;
 
-    PlayerState currentState;
+    [SerializeField] public PlayerState currentState;
     bool isIdle;
     public TextMeshProUGUI debugText;
 
@@ -214,8 +214,7 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetInteger("PlayerState", (int)currentState);
         animator.SetBool("isIdle", isIdle);
-        animator.SetBool("isCharging", playerAttack.isRightMouse);
-        animator.SetBool("isCharged", playerAttack.chargingPower >= playerAttack.chargingPowerMax);
+        animator.SetInteger("chargingState", playerAttack.isRightMouse ? (playerAttack.chargingPower < playerAttack.chargingPowerMax ? 1 : 2) : 0);
     }
 
     void SetDirection()
