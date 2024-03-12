@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        debugText.text = _rigidbody.position.x.ToString();
+        debugText.text = Input.GetAxisRaw("Vertical").ToString();
     }
 
     void FixedUpdate()
@@ -146,7 +146,8 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = Vector3.zero;
         trailRenderer.emitting = true;
-        dashingDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        float Grounded2f = Grounded ? 0f : 1f;
+        dashingDir = new Vector2(Input.GetAxisRaw("Horizontal"), Grounded2f - 1);
         if (dashingDir == Vector2.zero)
         {
             dashingDir = new Vector2(transform.localScale.x, 0);
