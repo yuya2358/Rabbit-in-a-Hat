@@ -86,8 +86,8 @@ public class PlayerMovement : MonoBehaviour
             case PlayerState.teleport:
 
                 TeleportPreparing();
-                SlowMoBG.SetActive(true);
                 capsuleCollider.enabled = false;
+                SlowMoBG.SetActive(true);
                 FindObjectOfType<GameManager>().SlowDown();
 
                 break;
@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        debugText.text = Input.GetAxisRaw("Vertical").ToString();
+        debugText.text = dashingDir.ToString();
     }
 
     void FixedUpdate()
@@ -146,8 +146,7 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = Vector3.zero;
         trailRenderer.emitting = true;
-        float Grounded2f = Grounded ? 0f : 1f;
-        dashingDir = new Vector2(Input.GetAxisRaw("Horizontal"), Grounded2f - 1);
+        dashingDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical") - 1);
         if (dashingDir == Vector2.zero)
         {
             dashingDir = new Vector2(transform.localScale.x, 0);
@@ -156,12 +155,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Teleport()
     {
-        transform.position = new Vector2(dashingDir.x * teleportDistance, dashingDir.y * teleportDistance);
+        transform.position = new Vector2(_rigidbody.position.x + dashingDir.x * teleportDistance, _rigidbody.position.y);
     }
 
     void TeleportEnd()
     {
-        velocity = Vector2.zero;
         trailRenderer.emitting = false;
         currentState = PlayerState.normal;
     }
