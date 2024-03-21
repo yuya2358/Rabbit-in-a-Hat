@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
     public Image BossHP;
+
+    bool isPaused = false;
     
 
     void Awake()
@@ -39,11 +41,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            SlowDown();
+            if (isPaused)
+            {
+                isPaused = false;
+                Time.timeScale = 1f;
+            }
+            else PauseGame();
         }
-        else SetSlowDownNormal();
     }
 
     private void LateUpdate()
@@ -61,6 +67,12 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+    }
+
     //Option Menu
     public void SetVolume(float volume)
     {
@@ -75,12 +87,14 @@ public class GameManager : MonoBehaviour
     //Slow Motion
     public void SlowDown()
     {
-        Time.timeScale = Mathf.Lerp(1, 0.1f, 5);
+        if (!isPaused)
+            Time.timeScale = Mathf.Lerp(1, 0.1f, 5);
 
     }
     public void SetSlowDownNormal()
     {
-        Time.timeScale = Mathf.Lerp(0.1f, 1f, 5);
+        if (!isPaused)
+            Time.timeScale = Mathf.Lerp(0.1f, 1f, 5);
 
     }
 
