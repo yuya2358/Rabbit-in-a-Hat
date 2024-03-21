@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 public class CardController : MonoBehaviour
 {
     Rigidbody2D _rigidbody;
-    float moveSpeed = 10f;
+    float moveSpeed = 30f;
     Vector3 initialMousePosition;
     Vector3 direction;
     GameObject player;

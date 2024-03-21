@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     CapsuleCollider2D capsuleCollider;
 
     [Header("Movement Variables")]
-    public float movementSpeed = 8f;
+    public float movementSpeed = 7f;
     public float maxJumpHeight = 5f;
     public float maxJumpTime = 1f;
     public float JumpForce => (2f * maxJumpHeight) / (maxJumpTime / 2f);
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     bool canDash = true;
 
     [Header("Teleport")]
-    int teleportDistance = 3;
+    int teleportDistance = 5;
     public GameObject SlowMoBG;
 
     [SerializeField] public PlayerState currentState;

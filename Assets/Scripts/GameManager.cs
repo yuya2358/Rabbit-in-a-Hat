@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (FindObjectOfType<EnemyController>() != null)
         BossHP.fillAmount = FindObjectOfType<EnemyController>().hp / FindObjectOfType<EnemyController>().i_hp;
 
         

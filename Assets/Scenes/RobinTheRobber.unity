@@ -362,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &647202563
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1165,6 +1165,7 @@ MonoBehaviour:
   maxJumpHeight: 5
   maxJumpTime: 1
   SlowMoBG: {fileID: 1933034271}
+  currentState: 0
   debugText: {fileID: 647202564}
 --- !u!1 &1380881035
 GameObject:
@@ -1554,7 +1555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1867652552
 RectTransform:
   m_ObjectHideFlags: 0
