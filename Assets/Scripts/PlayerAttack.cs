@@ -63,6 +63,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (hpText != null)
         hpText.text = "HP: " + hp;
     }
 

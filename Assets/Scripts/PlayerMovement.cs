@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
+        if (debugText != null)
         debugText.text = dashingDir.ToString();
     }
 
@@ -217,8 +218,14 @@ public class PlayerMovement : MonoBehaviour
 
     void SetDirection()
     {
-        RobinController robinController = FindObjectOfType<RobinController>();
-        float direction = Mathf.Sign(robinController.transform.position.x - transform.position.x);
-        transform.localScale = new Vector3(direction * 0.28f, 0.28f, 0.28f);
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+            if (gameManager.boss != null)
+            {
+                float direction = Mathf.Sign(gameManager.boss.transform.position.x - transform.position.x);
+                transform.localScale = new Vector3(direction * 0.28f, 0.28f, 0.28f);
+            }
+        }
     }
 }

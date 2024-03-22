@@ -18,7 +18,8 @@ public enum MouseState
 public class GameManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
-    public Image BossHP;
+    public Image bossHP;
+    public GameObject boss;
 
     bool isPaused = false;
     
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         if (FindObjectOfType<EnemyController>() != null)
-        BossHP.fillAmount = FindObjectOfType<EnemyController>().hp / FindObjectOfType<EnemyController>().i_hp;
+        bossHP.fillAmount = FindObjectOfType<EnemyController>().hp / FindObjectOfType<EnemyController>().i_hp;
 
         
     }
